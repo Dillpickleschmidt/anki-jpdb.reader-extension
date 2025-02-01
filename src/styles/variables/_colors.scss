@@ -41,9 +41,9 @@ $decks: (
 );
 
 $buttons: (
-  button-background-color: #214177,
-  button-text-color: #ddd,
-  button-shadow-color: #000,
+  button-background-color: rgb(75 85 99 / 0.75),
+  button-text-color: white,
+  button-shadow-color: rgb(37.5 42.5 49.5 / 0.25),
   button-focused-shadow-color: transparent,
   button-hover-shadow-color: transparent,
 
@@ -52,12 +52,12 @@ $buttons: (
 );
 
 $inputs: (
-  input-text-color: #aaa,
-  input-background-color: #191919,
-  input-border-color: #3a3a3a,
+  input-text-color: white,
+  input-background-color: rgb(75 85 99 / 0.75),
+  input-border-color: #1f2937,
   input-focused-border-color: #3b7def,
 
-  input-box-shadow-color: #111,
+  input-box-shadow-color: rgb(37.5 42.5 49.5 / 0.25),
   input-focused-box-shadow-color: transparent,
 
   checkbox-color: #3b7def,
@@ -70,8 +70,8 @@ $inputs: (
 );
 
 $colors: (
-  background-color: #181818,
-  text-color: #bbb,
+  background-color: #282c34,
+  text-color: white,
 
   link-color: #4b8dff,
   link-underline-color: #555,
