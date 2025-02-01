@@ -64,7 +64,16 @@ export class Popup {
       onmouseenter: () => this.startHover(),
       onmouseleave: () => this.stopHover(),
     },
-    children: [this._mineButtons, this._gradeButtons, this._context, this._details],
+    children: [
+      createElement('div', {
+        class: ['content-wrapper'],
+        children: [this._context, this._details],
+      }),
+      createElement('div', {
+        class: ['buttons-wrapper'],
+        children: [this._mineButtons, this._gradeButtons,],
+      }),
+    ],
   });
 
   private _hidePopupAutomatically: boolean;
@@ -476,12 +485,31 @@ export class Popup {
       createElement('div', {
         id: 'header',
         class: 'subsection',
-        children: [this.getReadingBlock(card), this.getCardStateBlock(card)],
+        children: [this.getReadingBlock(card), 
+          createElement('select', {
+          id: 'deck-select',
+          attributes: {
+            name: 'decks',
+            title: 'Go to the extension Settings page and check the decks you want to appear in this list.',
+          },
+          children: [
+            createElement('option', {
+              attributes: { value: '' },
+              innerText: 'Sel. Deck'
+            })
+          ]
+        })
+        ],
       }),
       createElement('div', {
         id: 'meta',
         class: 'subsection',
-        children: [this.getPitchAccentBlock(card), this.getFrequencyBlock(card)],
+        children: [this.getPitchAccentBlock(card),
+          createElement('div', {
+          id: 'freq-state',
+          children: [this.getFrequencyBlock(card), this.getCardStateBlock(card)],
+          })
+        ],
       }),
     );
   }
