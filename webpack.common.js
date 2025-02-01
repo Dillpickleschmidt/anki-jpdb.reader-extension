@@ -56,7 +56,7 @@ module.exports = {
           ],
         }),
         env === 'production' && new ZipPlugin({
-          filename: 'anki-jpdb.reader.zip',
+          filename: 'anki-jpdb.reader-extension.zip',
         })
       ].filter(Boolean),
       module: {
@@ -87,7 +87,7 @@ module.exports = {
         ],
       },
       output: {
-        path: path.resolve(__dirname, 'anki-jpdb.reader'),
+        path: path.resolve(__dirname, 'anki-jpdb.reader-extension'),
         clean: true,
       },
       optimization: {

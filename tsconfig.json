@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./anki-jpdb.reader/",
+    "outDir": "./anki-jpdb.reader-extension/",
     "noImplicitAny": true,
     "module": "es6",
     "target": "es2021",

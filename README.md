@@ -147,14 +147,14 @@ You can run the following command to build the extension locally:
 $ npm install
 $ npm run build
 ```
-The resulting files will be located in the `anki-jpdb.reader/` folder
+The resulting files will be located in the `anki-jpdb.reader-extension/` folder
 
 For development, you can also run the build in watch mode:
 ```sh
 $ npm install
 $ npm run watch
 ```
-This will continuously rebuild the source code as it changes, and place the output in the `anki-jpdb.reader/` folder.
+This will continuously rebuild the source code as it changes, and place the output in the `anki-jpdb.reader-extension/` folder.
 It can be loaded as an unpacked extension from there.
 Please remember to wait until building is done, and reload the extension on the "manage extensions" page before testing your changes.
 
@@ -169,8 +169,8 @@ Issues with feedback or ideas for new features are very welcome. You can also me
 The following commands may be of interest to you:
 *  `npm run lint`: Checks your code for formatting issues, linter warnings and type errors. The CI also runs this, so your pull request will only be accepted if it passes. You can use eslint ignore comments if you get false positives, but leave a comment explaining why you think the error is false and safe to ignore.
 *  `npm run lint:fix`: Reformats your code, as well as fixing any fixable lint issues. Note, if your editor has a `prettier` plugin, installing that and turning on "format on save" will be more convenient.
-*  `npm run build`: Compiles the code, putting the compiled code into `anki-jpdb.reader/`
-*  `npm run watch`: Automatically recompiles code when it changes, putting the output into `anki-jpdb.reader/`. Using this is recommended during development.
+*  `npm run build`: Compiles the code, putting the compiled code into `anki-jpdb.reader-extension/`
+*  `npm run watch`: Automatically recompiles code when it changes, putting the output into `anki-jpdb.reader-extension/`. Using this is recommended during development.
 
 ## License
 

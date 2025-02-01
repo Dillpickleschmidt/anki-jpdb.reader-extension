@@ -38,10 +38,10 @@ const parsed = relevant.map(line => {
 });
 const filtered = parsed.filter(({ hash }) => !parsed.some(({ refParent }) => hash === refParent));
 const items = filtered.map(({ hash, author, prId, message }) => ([
-  `<a class="hash" href="https://github.com/Kagu-chan/anki-jpdb.reader/commit/${hash}">${hash}</a>`,
+  `<a class="hash" href="https://github.com/Kagu-chan/anki-jpdb.reader-extension/commit/${hash}">${hash}</a>`,
   `<span class="message">${message}</span>`,
   `<span class="author">${author}</span>`,
-  prId ? `<a class="pr" href="https://github.com/Kagu-chan/anki-jpdb.reader/pull/${prId}">(#${prId})</a>` : undefined
+  prId ? `<a class="pr" href="https://github.com/Kagu-chan/anki-jpdb.reader-extension/pull/${prId}">(#${prId})</a>` : undefined
 ].filter(Boolean).join('\n\t'))).map((l) => `<li>\n\t${l}\n</li>`).join('\n');
 
 writeFileSync('changelog.html', `<ul>\n${items}\n</ul>`);

@@ -30,6 +30,6 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           prerelease: false
           files: |
-            anki-jpdb.reader/anki-jpdb.reader.zip
-            anki-jpdb.reader/LICENSE.md
+            anki-jpdb.reader-extension/anki-jpdb.reader-extension.zip
+            anki-jpdb.reader-extension/LICENSE.md
         id: 'automatic_releases'

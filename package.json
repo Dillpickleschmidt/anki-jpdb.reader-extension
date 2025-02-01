@@ -1,7 +1,7 @@
 {
-  "name": "anki-jpdb.reader",
-  "version": "0.1.0",
-  "description": "Mine from JPDB directly into Anki",
+  "name": "anki-jpdb.reader-extension",
+  "version": "1.0.0",
+  "description": "Japanese text parsing + sentence mining with JPDB.",
   "private": true,
   "scripts": {
     "changelog": "node changelog.mjs",
@@ -14,20 +14,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kagu-chan/jpd-breader.git"
+    "url": "git+https://github.com/Dillpickleschmidt/anki-jpdb.reader-extension.git"
   },
   "keywords": [
     "anki",
     "jpdb",
     "mining",
-    "parser"
+    "parser",
+    "asbplayer"
   ],
-  "author": "Kagu-chan",
-  "license": "ISC",
+  "author": "Dillpickleschmidt",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Kagu-chan/jpd-breader/issues"
+    "url": "https://github.com/Dillpickleschmidt/anki-jpdb.reader-extension/issues"
   },
-  "homepage": "https://github.com/Kagu-chan/jpd-breader#readme",
+  "homepage": "https://github.com/Dillpickleschmidt/anki-jpdb.reader-extension#readme",
   "browserslist": [
     "chrome >= 116"
   ],
