@@ -1,3 +1,43 @@
+# Anki JPDB Reader Extension
+
+A browser extension thats aims to parse most japanese text in the browser using [JPDB](https://jpdb.io/) and mining into JPDB or [Anki](https://apps.ankiweb.net/) decks, with better styling for subtitles.
+
+![Main Preview](assets/img/main_preview.png)
+
+## Why not anki-jpd.reader?
+
+I didn't find its UI very appealing and it had some quality-of-life features missing.
+
+ASB-Player's subtitles look ugly and it doesn't offer the customization I was looking for. I've kept jpd-breader's ability to mine any page, but added much nicer styling for video players, specifically.
+
+With this extension, you can easily pick and choose mining decks on the fly.
+
+See the [Added Features](#features) section for other changes.
+
+### Note that this builds directly on top of Kagu-chan's anki-jpdb.reader.
+
+## Stack
+- [TypeScript](https://www.typescriptlang.org/)
+- [Chrome Extension Manifest Version 3](https://developer.chrome.com/docs/extensions/mv3/intro/)
+
+<div style="display: flex; gap: 5px;">
+   <img src="assets/img/popup_preview.png" alt="Popup Preview" width="300"/>
+   <img src="assets/img/popup_preview_2.png" alt="Popup Preview" width="300"/>
+</div>
+
+![Settings Preview](assets/img/settings_page_preview.png)
+
+## Added Features
+
+- Add sentences + translations when adding words to deck
+- Customizable subtitle colorization based on word's state using nice, user friendly html color pickers
+- Choose which buttons you want to appear in the tooltip
+- Customizable button colorization
+- Choose which deck you want to add to on the fly
+- Auto translate sentence when adding word to deck or manually specify with "Add+" button [todo]
+
+### The rest is from the anki-jpdb.breader readme:
+
 # Anki JPDB Reader
 
 A browser extension thats aims to parse most japanese text in the browser using [JPDB](https://jpdb.io/) and mining into JPDB or [Anki](https://apps.ankiweb.net/) decks.
