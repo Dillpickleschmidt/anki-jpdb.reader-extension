@@ -52,7 +52,9 @@ export type HostMeta = {
     | 'MokuroLegacyParser'
     | 'ReadwokParser'
     | 'TtsuParser'
-    | 'ExStaticParser';
+    | 'ExStaticParser'
+    | 'ASBPlayerParser'
+    | 'YouTubeParser';
 
   /**
    * If `disabled`, a page is extempt from trigger parsing. This automatically applies to pages having specific automatic parsers as well.

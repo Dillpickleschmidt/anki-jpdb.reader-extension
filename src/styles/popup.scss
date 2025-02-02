@@ -70,9 +70,11 @@
           text-align: right;
           padding: 0.125rem;
           height: auto;
-          font-size: 1.125rem /* 18px */;
-          line-height: 1.75rem /* 28px */;
+          font-size: 1rem;
+          line-height: 1.5rem;
           margin-bottom: 0px;
+          appearance: auto; // Enable the dropdown arrow
+          border: 0;
         }
 
         &#meta {

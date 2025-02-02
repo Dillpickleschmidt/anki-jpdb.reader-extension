@@ -89,6 +89,21 @@
     }
   },
   {
+    "host": ["*://*.youtube.com/*", "*://*.youtu.be/*"],
+    "auto": true,
+    "allFrames": false,
+    "custom": "YouTubeParser",
+    "parseVisibleObserver": true,
+    "addedObserver": {
+      "notifyFor": "#ytp-caption-window-container",
+      "observeFrom": "body",
+      "config": {
+        "childList": true,
+        "subtree": true
+      }
+    }
+  },
+  {
     "host": "*://reader.mokuro.app/*",
     "auto": true,
     "allFrames": true,
@@ -131,6 +146,7 @@
     "auto": true,
     "allFrames": true,
     "css": ".asbplayer-subtitles-container-bottom { z-index: 2147483646 }",
+    "custom": "ASBPlayerParser",
     "addedObserver": {
       "notifyFor": ".asbplayer-offscreen",
       "observeFrom": "body",

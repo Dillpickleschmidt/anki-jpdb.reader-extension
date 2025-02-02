@@ -6,6 +6,8 @@ import { MokuroLegacyParser } from './custom-parsers/mokuro-legacy.parser';
 import { MokuroParser } from './custom-parsers/mokuro.parser';
 import { ReadwokParser } from './custom-parsers/readwok.parser';
 import { TtsuParser } from './custom-parsers/ttsu.parser';
+import { ASBPlayerParser } from './custom-parsers/asbplayer.parser';
+import { YouTubeParser } from './custom-parsers/youtube.parser';
 
 export const getCustomParser = (
   name: Exclude<HostMeta['custom'], undefined>,
@@ -21,6 +23,8 @@ export const getCustomParser = (
     ReadwokParser,
     TtsuParser,
     ExStaticParser,
+    ASBPlayerParser,
+    YouTubeParser,
   };
   const parser = parsers[name];
 
