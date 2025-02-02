@@ -4,7 +4,6 @@ export type Keybind = { key: string; code: string; modifiers: string[] };
 export type ConfigurationSchema = {
   schemaVersion: number;
   jpdbApiToken: string;
-  jpdbMiningDeck: string;
   jpdbBlacklistDeck: string;
   jpdbForqDeck: string;
   jpdbNeverForgetDeck: string;
@@ -51,7 +50,7 @@ export type ConfigurationSchema = {
   addToMiningKey: Keybind;
   addToBlacklistKey: Keybind;
   addToNeverForgetKey: Keybind;
-  
+
   // Word Colors
   'jpdb-word-color': string;
   'unparsed-color': string;
@@ -67,6 +66,21 @@ export type ConfigurationSchema = {
   'suspended-color': string;
   'blacklisted-color': string;
   'misparsed-color': string;
+
+  // Button Colors
+  'add-button-color': string;
+  'never-forget-button-color': string;
+  'blacklist-button-color': string;
+  'nothing-button-color': string;
+  'something-button-color': string;
+  'hard-button-color': string;
+  'okay-button-color': string;
+  'easy-button-color': string;
+  'pass-button-color': string;
+  'fail-button-color': string;
+
+  selectedDecks: [number, string][];
+  selectedMiningDeck: string;
 
   customWordCSS: string;
   customPopupCSS: string;

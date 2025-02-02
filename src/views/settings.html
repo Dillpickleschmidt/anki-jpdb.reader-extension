@@ -55,6 +55,28 @@
           </div>
         </div>
 
+        <div class="form-box-parent">
+        <div class="form-box">
+          <h6>Quick Access Decks</h6>
+            <p style="opacity: 0.8">Select the decks you want to appear in the popup's deck selector.</p>
+            <div id="deck-selection-div">
+              <table id="deck-selection-table">
+                <thead>
+                  <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Word Count</th>
+                    <th>Known (%)</th>
+                    <th>In-Progress (%)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+
         <div id="jpdb-decks" class="collapsible" hidden skip-animation>
           <h6>Mining Configuration</h6>
 
@@ -177,10 +199,10 @@
 
           <div class="form-box-parent distance-before">
             <div class="form-box">
-              <div>
+              <!-- <div>
                 <label for="jpdbMiningDeck">Mining Deck</label>
                 <select type="jpdb" id="jpdbMiningDeck" name="jpdbMiningDeck"></select>
-              </div>
+              </div> -->
 
               <div>
                 <label for="jpdbBlacklistDeck">Blacklist Deck</label>
@@ -509,6 +531,71 @@
             <input type="color" id="misparsed-color" name="misparsed-color" class="color-picker" />
             <label for="misparsed-color">Misparsed</label>
             <span class="sample-text jpdb-word misparsed">Sample text</span>
+          </div>
+        </div>
+
+        <h6 class="distance-before">Popup Button Colors</h6>
+        <div class="color-grid">
+          <!-- Mining buttons -->
+          <div class="color-item">
+            <input type="color" id="add-button-color" name="add-button-color" class="color-picker" />
+            <label for="add-button-color">Add Button</label>
+            <span class="sample-text outline button-mining">Add</span>
+          </div>
+          
+          <div class="color-item">
+            <input type="color" id="never-forget-button-color" name="never-forget-button-color" class="color-picker" />
+            <label for="never-forget-button-color">Never Forget Button</label>
+            <span class="sample-text outline button-never-forget">Never Forget</span>
+          </div>
+
+          <div class="color-item">
+            <input type="color" id="blacklist-button-color" name="blacklist-button-color" class="color-picker" />
+            <label for="blacklist-button-color">Blacklist Button</label>
+            <span class="sample-text outline button-blacklist">Blacklist</span>
+          </div>
+
+          <!-- Grading buttons -->
+          <div class="color-item">
+            <input type="color" id="nothing-button-color" name="nothing-button-color" class="color-picker" />
+            <label for="nothing-button-color">Nothing Button</label>
+            <span class="sample-text outline button-nothing">Nothing</span>
+          </div>
+
+          <div class="color-item">
+            <input type="color" id="something-button-color" name="something-button-color" class="color-picker" />
+            <label for="something-button-color">Something Button</label>
+            <span class="sample-text outline button-something">Something</span>
+          </div>
+
+          <div class="color-item">
+            <input type="color" id="hard-button-color" name="hard-button-color" class="color-picker" />
+            <label for="hard-button-color">Hard Button</label>
+            <span class="sample-text outline button-hard">Hard</span>
+          </div>
+
+          <div class="color-item">
+            <input type="color" id="okay-button-color" name="okay-button-color" class="color-picker" />
+            <label for="okay-button-color">Okay Button</label>
+            <span class="sample-text outline button-okay">Okay</span>
+          </div>
+
+          <div class="color-item">
+            <input type="color" id="easy-button-color" name="easy-button-color" class="color-picker" />
+            <label for="easy-button-color">Easy Button</label>
+            <span class="sample-text outline button-easy">Easy</span>
+          </div>
+
+          <div class="color-item">
+            <input type="color" id="pass-button-color" name="pass-button-color" class="color-picker" />
+            <label for="pass-button-color">Pass Button</label>
+            <span class="sample-text outline button-pass">Pass</span>
+          </div>
+
+          <div class="color-item">
+            <input type="color" id="fail-button-color" name="fail-button-color" class="color-picker" />
+            <label for="fail-button-color">Fail Button</label>
+            <span class="sample-text outline button-fail">Fail</span>
           </div>
         </div>
 

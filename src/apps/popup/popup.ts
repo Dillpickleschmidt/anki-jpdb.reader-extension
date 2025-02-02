@@ -1,4 +1,5 @@
 import { getConfiguration } from '@shared/configuration/get-configuration';
+import { setConfiguration } from '@shared/configuration/set-configuration';
 import { createElement } from '@shared/dom/create-element';
 import { findElements } from '@shared/dom/find-elements';
 import { withElement } from '@shared/dom/with-element';
@@ -11,6 +12,7 @@ import { onBroadcastMessage } from '@shared/messages/receiving/on-broadcast-mess
 import { KeybindManager } from '../integration/keybind-manager';
 import { Registry } from '../integration/registry';
 import { PARTS_OF_SPEECH } from './part-of-speech';
+import { ConfigurationSchema } from '../../shared/configuration/types';
 
 export class Popup {
   private _keyManager = new KeybindManager([], {
@@ -45,9 +47,7 @@ export class Popup {
   private _customStyles: HTMLStyleElement = createElement('style');
 
   /** Contains the buttons to manage the card and its decks */
-  private _mineButtons = createElement('section', { id: 'mining', class: ['controls'] });
-  /** Contains the buttons to manage card states */
-  private _gradeButtons = createElement('section', { id: 'grading', class: ['controls'] });
+  private _buttons = createElement('section', { id: 'buttons-wrapper' });
   /** Contains the header data - all information about a word except its meaning */
   private _context = createElement('section', { id: 'context' });
   /** Contains the various meanings of a word */
@@ -69,10 +69,7 @@ export class Popup {
         class: ['content-wrapper'],
         children: [this._context, this._details],
       }),
-      createElement('div', {
-        class: ['buttons-wrapper'],
-        children: [this._mineButtons, this._gradeButtons,],
-      }),
+      this._buttons,
     ],
   });
 
@@ -83,9 +80,11 @@ export class Popup {
   private _disableFadeAnimation: boolean;
   private _useTwoPointGrading: boolean;
 
-  private _miningDeck?: string;
+  private _selectedDeck: string = '';
   private _neverForgetDeck?: string;
   private _blacklistDeck?: string;
+
+  private _selectedDecks: [number, string][] = [];
 
   private _hideTimer?: NodeJS.Timeout;
   private _isHover?: boolean;
@@ -160,14 +159,39 @@ export class Popup {
     this._useTwoPointGrading = await getConfiguration('jpdbUseTwoGrades', true);
     this._disableReviews = await getConfiguration('jpdbDisableReviews', true);
 
-    this._miningDeck = await getConfiguration('jpdbMiningDeck', true);
+    this._selectedDeck = await getConfiguration('selectedMiningDeck', true);
     this._neverForgetDeck = await getConfiguration('jpdbNeverForgetDeck', true);
     this._blacklistDeck = await getConfiguration('jpdbBlacklistDeck', true);
 
+    this._selectedDecks = await getConfiguration('selectedDecks', true);
+
+    // Load all the color values and set them as CSS variables
+    const rootStyle = this._root.style;
+
+    // Button Colors
+    const buttonColors = [
+      'add-button-color',
+      'never-forget-button-color',
+      'blacklist-button-color',
+      'nothing-button-color',
+      'something-button-color',
+      'hard-button-color',
+      'okay-button-color',
+      'easy-button-color',
+      'pass-button-color',
+      'fail-button-color',
+    ];
+
+    for (const color of buttonColors) {
+      const colorValue = await getConfiguration(color as keyof ConfigurationSchema, true);
+      if (typeof colorValue === 'string') {
+        rootStyle.setProperty(`--${color}`, colorValue);
+      }
+    }
+
     this._customStyles.textContent = await getConfiguration('customPopupCSS', true);
 
-    this.updateMiningButtons();
-    this.updateGradingButtons();
+    this.updateButtons();
   }
 
   //#endregion
@@ -366,82 +390,83 @@ export class Popup {
   //#endregion
   //#region Button Renderer
 
-  private updateMiningButtons(): void {
+  private updateButtons(): void {
+    this._buttons.replaceChildren();
+
     const performDeckAction = (
       action: 'add' | 'remove',
       key: 'mining' | 'neverForget' | 'blacklist',
     ): void => {
       const { vid, sid } = this._card!;
-
       const deckAction = new RunDeckActionCommand(vid, sid, key, action);
       const updateCardState = new UpdateCardStateCommand(vid, sid);
-
       deckAction.send(() => updateCardState.send());
     };
+
     const performFlaggedDeckAction = (key: 'neverForget' | 'blacklist'): void => {
       const action = this.cardHasState(key, this._card!) ? 'remove' : 'add';
-
       performDeckAction(action, key);
     };
 
-    this._mineButtons.replaceChildren();
-
-    this.addMiningButton(this._miningDeck, 'mining', 'Add', () =>
-      performDeckAction('add', 'mining'),
-    );
-
-    this.addMiningButton(this._neverForgetDeck, 'never-forget', undefined, () =>
-      performFlaggedDeckAction('neverForget'),
-    );
-    this.addMiningButton(this._blacklistDeck, 'blacklist', undefined, () =>
-      performFlaggedDeckAction('blacklist'),
-    );
-  }
-
-  private addMiningButton(
-    deck: string | undefined,
-    id: string,
-    text?: string,
-    handler?: () => void,
-  ): void {
-    if (!deck?.length) {
-      return;
+    // Add mining buttons
+    if (this._selectedDeck) {
+      this._buttons.appendChild(
+        createElement('a', {
+          id: 'add-deck',
+          class: ['outline', 'button-add'],
+          innerText: 'Add',
+          handler: () => performDeckAction('add', 'mining'),
+        }),
+      );
     }
 
-    this._mineButtons.appendChild(
-      createElement('a', {
-        id: `${id}-deck`,
-        class: ['outline', id],
-        innerText: text,
-        handler,
-      }),
-    );
-  }
+    if (this._neverForgetDeck) {
+      this._buttons.appendChild(
+        createElement('a', {
+          id: 'never-forget-deck',
+          class: ['outline', 'button-never-forget'],
+          handler: () => performFlaggedDeckAction('neverForget'),
+        }),
+      );
+    }
 
-  private updateGradingButtons(): void {
-    const buttons: JPDBGrade[] = this._useTwoPointGrading
-      ? ['fail', 'pass']
-      : ['nothing', 'something', 'hard', 'okay', 'easy'];
+    if (this._blacklistDeck) {
+      this._buttons.appendChild(
+        createElement('a', {
+          id: 'blacklist-deck',
+          class: ['outline', 'button-blacklist'],
+          handler: () => performFlaggedDeckAction('blacklist'),
+        }),
+      );
+    }
 
-    const gradeButtons = buttons.map((grade) =>
-      createElement('a', {
-        id: grade,
-        class: ['outline', grade],
-        innerText: grade,
-        handler: () => {
-          const { vid, sid } = this._card!;
+    // Add grade buttons if reviews are enabled
+    if (!this._disableReviews) {
+      const buttons: JPDBGrade[] = this._useTwoPointGrading
+        ? ['fail', 'pass']
+        : ['nothing', 'something', 'hard', 'okay', 'easy'];
 
-          const gradeCard = new GradeCardCommand(vid, sid, grade);
-          const updateCardState = new UpdateCardStateCommand(vid, sid);
-
-          gradeCard.send(() => updateCardState.send());
-        },
-      }),
-    );
-
-    this._gradeButtons.replaceChildren(...gradeButtons);
-
-    this._gradeButtons.style.display = this._disableReviews ? 'none' : '';
+      buttons.forEach((grade) =>
+        this._buttons.appendChild(
+          createElement('a', {
+            id: grade,
+            class: ['outline', `button-${grade}`],
+            innerText:
+              grade === 'something'
+                ? 'Somth.'
+                : grade === 'nothing'
+                  ? 'Noth.'
+                  : grade.charAt(0).toUpperCase() + grade.slice(1), // Capitalize the first letter
+            handler: () => {
+              const { vid, sid } = this._card!;
+              const gradeCard = new GradeCardCommand(vid, sid, grade);
+              const updateCardState = new UpdateCardStateCommand(vid, sid);
+              gradeCard.send(() => updateCardState.send());
+            },
+          }),
+        ),
+      );
+    }
   }
 
   //#endregion
@@ -471,44 +496,63 @@ export class Popup {
     const isNF = this.cardHasState('neverForget', card);
     const isBL = this.cardHasState('blacklist', card);
 
-    withElement(this._mineButtons, '#never-forget-deck', (el) => {
-      el.innerText = isNF ? 'Unmark as never forget' : 'Never forget';
+    withElement(this._buttons, '#never-forget-deck', (el) => {
+      el.innerText = isNF ? 'Unmark as N.F.' : 'Never F.';
     });
-    withElement(this._mineButtons, '#blacklist-deck', (el) => {
-      el.innerText = isBL ? 'Remove from blacklist' : 'Blacklist';
+    withElement(this._buttons, '#blacklist-deck', (el) => {
+      el.innerText = isBL ? 'Remove from B.' : 'Blacklist';
     });
   }
 
   private adjustContext(card: JPDBCard): void {
     this._context.setAttribute('class', card.cardState.join(' '));
+
+    const deckSelect = createElement('select', {
+      id: 'deck-select',
+      attributes: {
+        name: 'decks',
+        title:
+          'Go to the extension Settings page and check the decks you want to appear in this list.',
+      },
+      events: {
+        onchange: async (e: Event) => {
+          this._selectedDeck = (e.target as HTMLSelectElement).value;
+          await setConfiguration('selectedMiningDeck', this._selectedDeck);
+          this.updateButtons();
+        },
+      },
+      children: [
+        createElement('option', {
+          attributes: { value: '' },
+          innerText: 'Sel. Deck',
+        }),
+        ...this._selectedDecks.map((deck) =>
+          createElement('option', {
+            attributes: {
+              value: deck[0].toString(),
+              selected: deck[0].toString() === this._selectedDeck,
+            },
+            innerText: deck[1],
+          }),
+        ),
+      ],
+    });
+
     this._context.replaceChildren(
       createElement('div', {
         id: 'header',
         class: 'subsection',
-        children: [this.getReadingBlock(card), 
-          createElement('select', {
-          id: 'deck-select',
-          attributes: {
-            name: 'decks',
-            title: 'Go to the extension Settings page and check the decks you want to appear in this list.',
-          },
-          children: [
-            createElement('option', {
-              attributes: { value: '' },
-              innerText: 'Sel. Deck'
-            })
-          ]
-        })
-        ],
+        children: [this.getReadingBlock(card), deckSelect],
       }),
       createElement('div', {
         id: 'meta',
         class: 'subsection',
-        children: [this.getPitchAccentBlock(card),
+        children: [
+          this.getPitchAccentBlock(card),
           createElement('div', {
-          id: 'freq-state',
-          children: [this.getFrequencyBlock(card), this.getCardStateBlock(card)],
-          })
+            id: 'freq-state',
+            children: [this.getFrequencyBlock(card), this.getCardStateBlock(card)],
+          }),
         ],
       }),
     );

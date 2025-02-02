@@ -1,13 +1,13 @@
-$scrollbar-color: #3b7def;
-$scrollbar-background-color: #111;
+$scrollbar-color: #5A5A5A;
+$scrollbar-background-color: #1A1A1A;
 
 * {
-  scrollbar-width: 1em;
+  scrollbar-width: 0.4rem;
   scrollbar-color: $scrollbar-color $scrollbar-background-color;
 }
 
 *::-webkit-scrollbar {
-  width: 1em;
+  width: 0.4rem;
 }
 
 *::-webkit-scrollbar-track {
@@ -16,5 +16,5 @@ $scrollbar-background-color: #111;
 
 *::-webkit-scrollbar-thumb {
   background-color: $scrollbar-color;
-  border: 3px solid $scrollbar-background-color;
+  border: none solid $scrollbar-background-color;
 }

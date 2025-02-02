@@ -11,10 +11,14 @@
   "vs-code-prettier-eslint.prettierLast": false,
   "[html]": {
     "editor.formatOnSave": false,
-    "files.insertFinalNewline": false
+    "files.insertFinalNewline": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.preferences.importModuleSpecifier": "relative",
-  "typescript.preferences.importModuleSpecifier": "relative"
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

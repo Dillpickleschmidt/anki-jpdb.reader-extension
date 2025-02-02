@@ -45,7 +45,8 @@ class SettingsController {
 
   private async setup(): Promise<void> {
     await this._setupSimpleFields();
-    await this._setupColorPickers();
+    this._setupColorPickers();
+    await this._setupDeckSelection();
 
     await this._setupJPDB();
     await this._setupAnki();
@@ -65,25 +66,132 @@ class SettingsController {
       type === 'checkbox' ? 'checked' : 'value',
     );
   }
-  
-  private _setupColorPickers(): void {
-    withElements('input[type="color"]', (colorPicker: HTMLInputElement) => {
-      const sampleText = colorPicker.closest('.color-item')?.querySelector('.sample-text') as HTMLElement;
-      if (sampleText) {
-        const computedColor = window.getComputedStyle(sampleText).color;
-        const rgb = computedColor.match(/\d+/g);
-        if (rgb) {
-          const hexColor = '#' + rgb.map(x => parseInt(x).toString(16).padStart(2, '0')).join('');
-          colorPicker.value = hexColor;
-        }
-        
-        sampleText.style.color = colorPicker.value;
 
+  private _setupColorPickers(): void {
+    withElements('input[type="color"]', async (colorPicker: HTMLInputElement) => {
+      const name = colorPicker.name as keyof ConfigurationSchema;
+
+      // Cast to string since we know color values are strings
+      const value = (await getConfiguration(name, true)) as string;
+      colorPicker.value = value;
+
+      // Update sample text if it exists
+      const sampleText = colorPicker
+        .closest('.color-item')
+        ?.querySelector('.sample-text') as HTMLElement;
+      if (sampleText) {
+        sampleText.style.color = value;
+
+        // Add change listener
         colorPicker.addEventListener('input', (e) => {
           sampleText.style.color = (e.target as HTMLInputElement).value;
         });
       }
     });
+  }
+
+  private async _setupDeckSelection(): Promise<void> {
+    const deckTable = findElement<'tbody'>('#deck-selection-table tbody');
+
+    const updateDeckTable = async () => {
+      try {
+        // Fetch decks using listUserDecks
+        const decks = await listUserDecks(
+          [
+            'id',
+            'name',
+            'word_count',
+            'vocabulary_known_coverage',
+            'vocabulary_in_progress_coverage',
+            'is_built_in',
+          ],
+          { apiToken: await getConfiguration('jpdbApiToken', true) },
+        );
+
+        // Get current selected decks from configuration
+        const currentConfig = this._currentConfiguration.get('selectedDecks');
+        const selectedDecks = Array.isArray(currentConfig)
+          ? (currentConfig as [number, string][])
+          : [];
+        const selectedIds = selectedDecks.map(([id]) => id);
+
+        // Clear existing rows
+        deckTable.innerHTML = '';
+
+        // Sort decks by ID and create rows
+        decks
+          .sort((a, b) => (a.id as number) - (b.id as number))
+          .forEach((deck) => {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-gray-600 hover:bg-gray-700';
+
+            row.innerHTML = `
+            <td class="deck-select-id">
+              <input
+                type="checkbox"
+                name="selectedDecks"
+                id="deck-${deck.id}"
+                ${selectedIds.includes(deck.id as number) ? 'checked' : ''}
+                data-name="${deck.name}"
+              />
+              <label for="deck-${deck.id}">${deck.id}</label>
+            </td>
+            <td class="px-4 py-2">${deck.name}</td>
+            <td class="px-4 py-2">${deck.word_count}</td>
+            <td class="px-4 py-2">${(deck.vocabulary_known_coverage as number)?.toFixed(2)}%</td>
+            <td class="px-4 py-2">${(deck.vocabulary_in_progress_coverage as number)?.toFixed(2)}%</td>
+            <td class="text-nowrap px-4 py-2 text-center">
+              ${deck.is_built_in ? 'Built-in' : ''}
+            </td>
+          `;
+
+            const checkbox = row.querySelector<HTMLInputElement>(`#deck-${deck.id}`);
+            if (checkbox) {
+              checkbox.addEventListener('change', () => {
+                const currentValue = this._currentConfiguration.get('selectedDecks') as [
+                  number,
+                  string,
+                ][];
+                const currentSelected = Array.isArray(currentValue) ? currentValue : [];
+
+                const newSelected = checkbox.checked
+                  ? [...currentSelected, [Number(deck.id), String(deck.name)] as [number, string]]
+                  : currentSelected.filter(([id]) => id !== deck.id);
+
+                // Update current configuration
+                this._currentConfiguration.set('selectedDecks', newSelected);
+
+                // Compare with last saved configuration to track changes
+                const lastSavedValue = this._lastSavedConfiguration.get('selectedDecks');
+                const lastSaved = Array.isArray(lastSavedValue)
+                  ? (lastSavedValue as [number, string][])
+                  : [];
+                if (JSON.stringify(lastSaved) !== JSON.stringify(newSelected)) {
+                  this._localChanges.add('selectedDecks');
+                } else {
+                  this._localChanges.delete('selectedDecks');
+                }
+
+                this._updateSaveButton();
+              });
+            }
+
+            deckTable.appendChild(row);
+          });
+      } catch (error) {
+        console.error('Error fetching decks:', error);
+        deckTable.innerHTML =
+          '<tr><td colspan="6" class="px-4 py-2 text-red-500">Error loading decks</td></tr>';
+      }
+    };
+
+    // Load initial state and set up in configuration
+    const initialSelectedDecks = await getConfiguration('selectedDecks', true);
+    this._lastSavedConfiguration.set('selectedDecks', initialSelectedDecks);
+    this._currentConfiguration.set('selectedDecks', initialSelectedDecks);
+
+    // Initial render
+    await updateDeckTable();
   }
 
   /**
@@ -161,11 +269,17 @@ class SettingsController {
       this._saveButton.disabled = true;
 
       for (const key of itemsToSave) {
-        const inputElement = findElement<'input'>(`[name="${key}"]`);
-        const value = inputElement.type === 'checkbox' ? inputElement.checked : inputElement.value;
+        let value: any;
+
+        // Special handling for selectedDecks
+        if (key === 'selectedDecks') {
+          value = this._currentConfiguration.get('selectedDecks');
+        } else {
+          const inputElement = findElement<'input'>(`[name="${key}"]`);
+          value = inputElement.type === 'checkbox' ? inputElement.checked : inputElement.value;
+        }
 
         await setConfiguration(key, value);
-
         this._lastSavedConfiguration.set(key, value);
         this._localChanges.delete(key);
       }

@@ -34,7 +34,7 @@ export class RunDeckActionCommandHandler extends BackgroundCommandHandler<RunDec
     key: 'mining' | 'blacklist' | 'neverForget',
   ): Promise<JPDBSpecialDeckNames | number | false> {
     const deckKey = {
-      mining: 'jpdbMiningDeck',
+      mining: 'selectedMiningDeck',
       blacklist: 'jpdbBlacklistDeck',
       neverForget: 'jpdbNeverForgetDeck',
     }[key] as keyof ConfigurationSchema;

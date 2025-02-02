@@ -46,6 +46,7 @@ const OBJECT_KEYS: ConfigurationObjectKeys = [
   'addToMiningKey',
   'addToBlacklistKey',
   'addToNeverForgetKey',
+  'selectedDecks',
 ];
 
 export const getConfiguration = async <K extends keyof ConfigurationSchema>(
