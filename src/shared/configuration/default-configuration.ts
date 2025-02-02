@@ -74,6 +74,21 @@ export const DEFAULT_CONFIGURATION = Object.freeze<ConfigurationSchema>({
   addToBlacklistKey: { key: '', code: '', modifiers: [] },
   addToNeverForgetKey: { key: '', code: '', modifiers: [] },
 
+  'jpdb-word-color': '',
+  'unparsed-color': '',
+  'not-in-deck-color': '',
+  'locked-color': '',
+  'redundant-color': '',
+  'new-color': '',
+  'learning-color': '',
+  'known-color': '',
+  'never-forget-color': '',
+  'due-color': '',
+  'failed-color': '',
+  'suspended-color': '',
+  'blacklisted-color': '',
+  'misparsed-color': '',
+
   customWordCSS: '',
   customPopupCSS: '',
 });

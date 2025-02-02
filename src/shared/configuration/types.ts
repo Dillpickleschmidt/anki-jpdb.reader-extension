@@ -51,6 +51,22 @@ export type ConfigurationSchema = {
   addToMiningKey: Keybind;
   addToBlacklistKey: Keybind;
   addToNeverForgetKey: Keybind;
+  
+  // Word Colors
+  'jpdb-word-color': string;
+  'unparsed-color': string;
+  'not-in-deck-color': string;
+  'locked-color': string;
+  'redundant-color': string;
+  'new-color': string;
+  'learning-color': string;
+  'known-color': string;
+  'never-forget-color': string;
+  'due-color': string;
+  'failed-color': string;
+  'suspended-color': string;
+  'blacklisted-color': string;
+  'misparsed-color': string;
 
   customWordCSS: string;
   customPopupCSS: string;

@@ -8,19 +8,19 @@ $outlines: (
 );
 
 $states: (
-  new: #4b8dff,
-  not-in-deck: #4b8dff,
+  new: #ff4500,
+  not-in-deck: inherit,
 
-  blacklisted: #777,
-  locked: #777,
-  suspended: #777,
+  blacklisted: #b0b0b0,
+  locked: #a0522d,
+  suspended: #696969,
 
-  known: #70c000,
-  never-forget: #70c000,
+  known: #228b22,
+  never-forget: #9370db,
 
-  due: orangered,
-  failed: red,
-  learning: #5ea780,
+  due: #ffd700,
+  failed: #dc143c,
+  learning: #4169e1,
 );
 
 $grades: (

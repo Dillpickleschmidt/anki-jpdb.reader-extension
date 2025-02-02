@@ -45,6 +45,7 @@ class SettingsController {
 
   private async setup(): Promise<void> {
     await this._setupSimpleFields();
+    await this._setupColorPickers();
 
     await this._setupJPDB();
     await this._setupAnki();
@@ -63,6 +64,26 @@ class SettingsController {
     await this._setupFields('input, textarea, keybind-input', [''], (type) =>
       type === 'checkbox' ? 'checked' : 'value',
     );
+  }
+  
+  private _setupColorPickers(): void {
+    withElements('input[type="color"]', (colorPicker: HTMLInputElement) => {
+      const sampleText = colorPicker.closest('.color-item')?.querySelector('.sample-text') as HTMLElement;
+      if (sampleText) {
+        const computedColor = window.getComputedStyle(sampleText).color;
+        const rgb = computedColor.match(/\d+/g);
+        if (rgb) {
+          const hexColor = '#' + rgb.map(x => parseInt(x).toString(16).padStart(2, '0')).join('');
+          colorPicker.value = hexColor;
+        }
+        
+        sampleText.style.color = colorPicker.value;
+
+        colorPicker.addEventListener('input', (e) => {
+          sampleText.style.color = (e.target as HTMLInputElement).value;
+        });
+      }
+    });
   }
 
   /**

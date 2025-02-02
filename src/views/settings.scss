@@ -39,8 +39,6 @@ h6 {
   padding-top: 1.5em;
 }
 
-// Our text fields are not outlined by default, otherwise they would be blue
-// This is a workaround to make them look like they are outlined in error cases
 input.v1 {
   border: 1px solid map.get(colors.$outlines, v1);
 }
@@ -80,6 +78,69 @@ select {
   &.rem-height {
     max-height: unset;
   }
+}
+
+// Text Colors Section
+.text-colors-header {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.color-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  label {
+    margin: 0;
+  }
+}
+
+.color-picker {
+  height: 2rem;
+  width: 3rem;
+  border-radius: 0.25rem;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border: 1px solid map.get(colors.$outlines, v1);
+    border-radius: 0.25rem;
+  }
+}
+
+.sample-text {
+  margin-left: 0.5rem;
+  font-weight: bold;
+
+  // Defaults (will be overriden when the respective color-picker is modified)
+  &.jpdb-word { color: map.get(colors.$colors, text-color); }
+  &.unparsed { color: map.get(colors.$colors, text-color); }
+  &.not-in-deck { color: map.get(colors.$states, not-in-deck); }
+  &.locked { color: map.get(colors.$states, locked); }
+  &.redundant { color: map.get(colors.$colors, link-underline-color); }
+  &.new { color: map.get(colors.$states, new); }
+  &.learning { color: map.get(colors.$states, learning); }
+  &.known { color: map.get(colors.$states, known); }
+  &.never-forget { color: map.get(colors.$states, never-forget); }
+  &.due { color: map.get(colors.$states, due); }
+  &.failed { color: map.get(colors.$states, failed); }
+  &.suspended { color: map.get(colors.$states, suspended); }
+  &.blacklisted { color: map.get(colors.$states, blacklisted); }
+  &.misparsed { color: red; }
 }
 
 // special for working on stuff

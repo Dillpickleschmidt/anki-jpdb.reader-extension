@@ -20,41 +20,41 @@
 }
 
 .jpdb-word.locked {
-    color: rgb(119, 119, 119);
+    color: #a0522d;
 }
 
 .jpdb-word.suspended {
-    color: rgb(119, 119, 119);
+    color: #696969;
 }
 
 .jpdb-word.blacklisted {
-    color: rgb(119, 119, 119);
+    color: #b0b0b0;
 }
 
 .jpdb-word.never-forget {
-    color: rgb(112, 192, 0);
+    color: #9370db;
 }
 
 .jpdb-word.not-in-deck {
-    color: rgba(75, 141, 255, 0.5);
+    color: inherit;
 }
 
 .jpdb-word.new {
-    color: rgb(75, 141, 255);
+    color: #ff4500;
 }
 
 .jpdb-word.learning {
-    color: rgb(94, 167, 128);
+    color: #4169e1;
 }
 
 .jpdb-word.known {
-    color: rgb(112, 192, 0);
+    color: #228b22;
 }
 
 .jpdb-word.due {
-    color: rgb(255, 69, 0);
+    color: #ffd700;
 }
 
 .jpdb-word.failed {
-    color: rgb(255, 0, 0);
+    color: #dc143c;
 }
