@@ -557,6 +557,22 @@ class SettingsController {
   }
 
   private _setupCollapsibleTriggers(): void {
+    // Setup grading mode toggle
+    const gradeModeHandler = (): void => {
+      const useTwoGrades = (document.getElementById('jpdbUseTwoGrades') as HTMLInputElement)
+        .checked;
+      document
+        .querySelectorAll('[hides="#jpdbUseTwoGrades"]')
+        .forEach((el) => el.toggleAttribute('hidden', useTwoGrades));
+      document
+        .querySelectorAll('[shows="#jpdbUseTwoGrades"]')
+        .forEach((el) => el.toggleAttribute('hidden', !useTwoGrades));
+    };
+
+    // Initial setup and change handler for grading mode
+    document.getElementById('jpdbUseTwoGrades')?.addEventListener('change', gradeModeHandler);
+    gradeModeHandler();
+
     const setupElement = (
       key: string,
       reverse: boolean,

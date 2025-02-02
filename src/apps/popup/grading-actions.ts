@@ -52,7 +52,6 @@ export class GradingActions {
     const isAnkiEnabled = await getConfiguration('enableAnkiIntegration', true);
     const useTwoButtonGradingSystem = await getConfiguration('jpdbUseTwoGrades', true);
     const useFlagRotation = await getConfiguration('jpdbRotateFlags', true);
-    const disableReviews = await getConfiguration('jpdbDisableReviews', true);
     const fiveGradeKeys: FilterKeys<ConfigurationSchema, Keybind>[] = [
       'jpdbReviewNothing',
       'jpdbReviewSomething',
@@ -77,10 +76,6 @@ export class GradingActions {
       this._keyManager.addKeys(flagKeys, true);
     } else {
       this._keyManager.removeKeys(flagKeys, true);
-    }
-
-    if (disableReviews) {
-      return this._keyManager.removeKeys([...fiveGradeKeys, ...twoGradeKeys]);
     }
 
     if (useTwoButtonGradingSystem) {

@@ -15,7 +15,6 @@ export const DEFAULT_CONFIGURATION = Object.freeze<ConfigurationSchema>({
   jpdbRotateCycle: false,
   jpdbSetSentence: true,
   jpdbAutoTranslate: true,
-  jpdbDisableReviews: false,
   jpdbReviewNothing: { key: '', code: '', modifiers: [] },
   jpdbReviewSomething: { key: '', code: '', modifiers: [] },
   jpdbReviewHard: { key: '', code: '', modifiers: [] },
@@ -75,6 +74,20 @@ export const DEFAULT_CONFIGURATION = Object.freeze<ConfigurationSchema>({
   addToBlacklistKey: { key: '', code: '', modifiers: [] },
   addToNeverForgetKey: { key: '', code: '', modifiers: [] },
 
+  // Button Visibility Settings
+  buttonVisibility: {
+    showAdd: true,
+    showNeverForget: true,
+    showBlacklist: false,
+    showNothing: false,
+    showSomething: false,
+    showHard: false,
+    showOkay: true,
+    showEasy: false,
+    showPass: true,
+    showFail: true,
+  },
+
   // Word Colors with default values
   'jpdb-word-color': '#FFFFFF',
   'unparsed-color': '#808080',
@@ -106,6 +119,7 @@ export const DEFAULT_CONFIGURATION = Object.freeze<ConfigurationSchema>({
   selectedDecks: [],
   selectedMiningDeck: '',
 
-  customWordCSS: '',
+  customWordCSS:
+    '.jpdb-word:is(.never-forget, .known, .due, .failed) .jpdb-furi { display: none; }',
   customPopupCSS: '',
 });

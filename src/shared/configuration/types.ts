@@ -1,6 +1,18 @@
 import { DeckConfiguration, DiscoverWordConfiguration } from '../anki/types';
 
 export type Keybind = { key: string; code: string; modifiers: string[] };
+export interface ButtonVisibilityConfig {
+  showAdd: boolean;
+  showNeverForget: boolean;
+  showBlacklist: boolean;
+  showNothing: boolean;
+  showSomething: boolean;
+  showHard: boolean;
+  showOkay: boolean;
+  showEasy: boolean;
+  showPass: boolean;
+  showFail: boolean;
+}
 export type ConfigurationSchema = {
   schemaVersion: number;
   jpdbApiToken: string;
@@ -12,7 +24,6 @@ export type ConfigurationSchema = {
   jpdbUseTwoGrades: boolean;
   jpdbSetSentence: boolean;
   jpdbAutoTranslate: boolean;
-  jpdbDisableReviews: boolean;
   jpdbRotateFlags: boolean;
   jpdbRotateCycle: boolean;
   jpdbReviewNothing: Keybind;
@@ -52,6 +63,9 @@ export type ConfigurationSchema = {
   addToMiningKey: Keybind;
   addToBlacklistKey: Keybind;
   addToNeverForgetKey: Keybind;
+
+  // Button Visibility Settings
+  buttonVisibility: ButtonVisibilityConfig;
 
   // Word Colors
   'jpdb-word-color': string;

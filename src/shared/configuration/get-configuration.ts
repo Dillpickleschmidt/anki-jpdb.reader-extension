@@ -14,7 +14,6 @@ const BOOLEAN_KEYS: ConfigurationBooleanKeys = [
   'jpdbUseTwoGrades',
   'jpdbSetSentence',
   'jpdbAutoTranslate',
-  'jpdbDisableReviews',
   'jpdbRotateFlags',
   'jpdbRotateCycle',
   'enableAnkiIntegration',
@@ -49,6 +48,7 @@ const OBJECT_KEYS: ConfigurationObjectKeys = [
   'addToBlacklistKey',
   'addToNeverForgetKey',
   'selectedDecks',
+  'buttonVisibility',
 ];
 
 export const getConfiguration = async <K extends keyof ConfigurationSchema>(

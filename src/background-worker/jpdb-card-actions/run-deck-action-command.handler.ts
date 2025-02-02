@@ -23,25 +23,22 @@ export class RunDeckActionCommandHandler extends BackgroundCommandHandler<RunDec
     shouldTranslate?: boolean,
   ): Promise<void> {
     const deckIdOrName = await this.getDeck(sender, deck);
+    if (!deckIdOrName) return;
 
-    if (!deckIdOrName) {
-      return;
-    }
+    try {
+      await (action === 'add' ? addVocabulary : removeVocabulary)(deckIdOrName, vid, sid);
+      await new ToastCommand(
+        'success',
+        `Successfully ${action}ed ${action === 'add' ? 'to' : 'from'} deck`,
+      ).call(sender.tab!.id!);
 
-    const fn = action === 'add' ? addVocabulary : removeVocabulary;
-    await fn(deckIdOrName, vid, sid);
-
-    // Only handle sentences when adding and sentence is provided
-    if (action === 'add' && sentence) {
-      try {
-        let translation;
-        if (shouldTranslate) {
-          translation = await getEnglishTranslation(sentence);
-        }
+      if (action === 'add' && sentence) {
+        const translation = shouldTranslate ? await getEnglishTranslation(sentence) : undefined;
         await setCardSentence(vid, sid, sentence, translation);
-      } catch (error) {
-        console.error('Error setting sentence:', error);
       }
+    } catch (error) {
+      console.error(`Error during ${action}:`, error);
+      await new ToastCommand('error', `Failed to ${action} vocabulary.`).call(sender.tab!.id!);
     }
   }
 

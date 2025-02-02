@@ -106,13 +106,6 @@
                 </p>
               </div>
 
-              <div>
-                <div class="checkbox">
-                  <input type="checkbox" id="jpdbDisableReviews" name="jpdbDisableReviews" hides=".review" runlast />
-                  <label for="jpdbDisableReviews">Disable review actions</label>
-                </div>
-              </div>
-
               <div class="review">
                 <div class="checkbox">
                   <input type="checkbox" id="jpdbUseTwoGrades" name="jpdbUseTwoGrades" hides=".grade-five" shows=".grade-two" />
@@ -551,67 +544,68 @@
           </div>
         </div>
 
-        <h6 class="distance-before">Popup Button Colors</h6>
+        <h6>Popup Button Colors</h6>
         <div class="color-grid">
           <!-- Mining buttons -->
           <div class="color-item">
+            <input type="checkbox" id="buttonVisibility-showAdd" name="buttonVisibility.showAdd" class="checkbox" />
             <input type="color" id="add-button-color" name="add-button-color" class="color-picker" />
-            <label for="add-button-color">Add Button</label>
-            <span class="sample-text outline button-mining">Add</span>
+            <span class="sample-text outline button-add">Add</span>
           </div>
           
           <div class="color-item">
+            <input type="checkbox" id="buttonVisibility-showNeverForget" name="buttonVisibility.showNeverForget" class="checkbox" />
             <input type="color" id="never-forget-button-color" name="never-forget-button-color" class="color-picker" />
-            <label for="never-forget-button-color">Never Forget Button</label>
-            <span class="sample-text outline button-never-forget">Never Forget</span>
+            <span class="sample-text outline button-never-forget">Never F.</span>
           </div>
 
           <div class="color-item">
+            <input type="checkbox" id="buttonVisibility-showBlacklist" name="buttonVisibility.showBlacklist" class="checkbox" />
             <input type="color" id="blacklist-button-color" name="blacklist-button-color" class="color-picker" />
-            <label for="blacklist-button-color">Blacklist Button</label>
             <span class="sample-text outline button-blacklist">Blacklist</span>
           </div>
 
-          <!-- Grading buttons -->
-          <div class="color-item">
+          <!-- 5-point grading buttons -->
+          <div class="color-item" hides="#jpdbUseTwoGrades">
+            <input type="checkbox" id="buttonVisibility-showNothing" name="buttonVisibility.showNothing" class="checkbox" />
             <input type="color" id="nothing-button-color" name="nothing-button-color" class="color-picker" />
-            <label for="nothing-button-color">Nothing Button</label>
-            <span class="sample-text outline button-nothing">Nothing</span>
+            <span class="sample-text outline button-nothing">Noth.</span>
           </div>
 
-          <div class="color-item">
+          <div class="color-item" hides="#jpdbUseTwoGrades">
+            <input type="checkbox" id="buttonVisibility-showSomething" name="buttonVisibility.showSomething" class="checkbox" />
             <input type="color" id="something-button-color" name="something-button-color" class="color-picker" />
-            <label for="something-button-color">Something Button</label>
-            <span class="sample-text outline button-something">Something</span>
+            <span class="sample-text outline button-something">Somth.</span>
           </div>
 
-          <div class="color-item">
+          <div class="color-item" hides="#jpdbUseTwoGrades">
+            <input type="checkbox" id="buttonVisibility-showHard" name="buttonVisibility.showHard" class="checkbox" />
             <input type="color" id="hard-button-color" name="hard-button-color" class="color-picker" />
-            <label for="hard-button-color">Hard Button</label>
             <span class="sample-text outline button-hard">Hard</span>
           </div>
 
-          <div class="color-item">
+          <div class="color-item" hides="#jpdbUseTwoGrades">
+            <input type="checkbox" id="buttonVisibility-showOkay" name="buttonVisibility.showOkay" class="checkbox" />
             <input type="color" id="okay-button-color" name="okay-button-color" class="color-picker" />
-            <label for="okay-button-color">Okay Button</label>
             <span class="sample-text outline button-okay">Okay</span>
           </div>
 
-          <div class="color-item">
+          <div class="color-item" hides="#jpdbUseTwoGrades">
+            <input type="checkbox" id="buttonVisibility-showEasy" name="buttonVisibility.showEasy" class="checkbox" />
             <input type="color" id="easy-button-color" name="easy-button-color" class="color-picker" />
-            <label for="easy-button-color">Easy Button</label>
             <span class="sample-text outline button-easy">Easy</span>
           </div>
 
-          <div class="color-item">
+          <!-- 2-point grading buttons -->
+          <div class="color-item" shows="#jpdbUseTwoGrades">
+            <input type="checkbox" id="buttonVisibility-showPass" name="buttonVisibility.showPass" class="checkbox" />
             <input type="color" id="pass-button-color" name="pass-button-color" class="color-picker" />
-            <label for="pass-button-color">Pass Button</label>
             <span class="sample-text outline button-pass">Pass</span>
           </div>
 
-          <div class="color-item">
+          <div class="color-item" shows="#jpdbUseTwoGrades">
+            <input type="checkbox" id="buttonVisibility-showFail" name="buttonVisibility.showFail" class="checkbox" />
             <input type="color" id="fail-button-color" name="fail-button-color" class="color-picker" />
-            <label for="fail-button-color">Fail Button</label>
             <span class="sample-text outline button-fail">Fail</span>
           </div>
         </div>

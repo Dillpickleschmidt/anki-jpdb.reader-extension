@@ -12,7 +12,7 @@ import { onBroadcastMessage } from '@shared/messages/receiving/on-broadcast-mess
 import { KeybindManager } from '../integration/keybind-manager';
 import { Registry } from '../integration/registry';
 import { PARTS_OF_SPEECH } from './part-of-speech';
-import { ConfigurationSchema } from '../../shared/configuration/types';
+import { ButtonVisibilityConfig, ConfigurationSchema } from '@shared/configuration/types';
 
 export class Popup {
   private _keyManager = new KeybindManager([], {
@@ -78,7 +78,6 @@ export class Popup {
   private _hideAfterAction: boolean;
   private _setSentenceOnAdd: boolean;
   private _autoTranslate: boolean;
-  private _disableReviews: boolean;
   private _disableFadeAnimation: boolean;
   private _useTwoPointGrading: boolean;
 
@@ -87,6 +86,7 @@ export class Popup {
   private _blacklistDeck?: string;
 
   private _selectedDecks: [number, string][] = [];
+  private _buttonVisibility: ButtonVisibilityConfig;
 
   private _hideTimer?: NodeJS.Timeout;
   private _isHover?: boolean;
@@ -161,13 +161,13 @@ export class Popup {
     this._useTwoPointGrading = await getConfiguration('jpdbUseTwoGrades', true);
     this._setSentenceOnAdd = await getConfiguration('jpdbSetSentence', true);
     this._autoTranslate = await getConfiguration('jpdbAutoTranslate', true);
-    this._disableReviews = await getConfiguration('jpdbDisableReviews', true);
 
     this._selectedDeck = await getConfiguration('selectedMiningDeck', true);
     this._neverForgetDeck = await getConfiguration('jpdbNeverForgetDeck', true);
     this._blacklistDeck = await getConfiguration('jpdbBlacklistDeck', true);
 
     this._selectedDecks = await getConfiguration('selectedDecks', true);
+    this._buttonVisibility = await getConfiguration('buttonVisibility', true);
 
     // Load all the color values and set them as CSS variables
     const rootStyle = this._root.style;
@@ -435,8 +435,8 @@ export class Popup {
       performDeckAction(action, key);
     };
 
-    // Add mining buttons
-    if (this._selectedDeck) {
+    // Add mining buttons with visibility checks
+    if (this._buttonVisibility.showAdd) {
       this._buttons.appendChild(
         createElement('a', {
           id: 'add-deck',
@@ -447,7 +447,7 @@ export class Popup {
       );
     }
 
-    if (this._neverForgetDeck) {
+    if (this._neverForgetDeck && this._buttonVisibility.showNeverForget) {
       this._buttons.appendChild(
         createElement('a', {
           id: 'never-forget-deck',
@@ -457,7 +457,7 @@ export class Popup {
       );
     }
 
-    if (this._blacklistDeck) {
+    if (this._blacklistDeck && this._buttonVisibility.showBlacklist) {
       this._buttons.appendChild(
         createElement('a', {
           id: 'blacklist-deck',
@@ -467,13 +467,28 @@ export class Popup {
       );
     }
 
-    // Add grade buttons if reviews are enabled
-    if (!this._disableReviews) {
-      const buttons: JPDBGrade[] = this._useTwoPointGrading
-        ? ['fail', 'pass']
-        : ['nothing', 'something', 'hard', 'okay', 'easy'];
+    // Add grade buttons based on mode and visibility settings
+    type ButtonConfig = {
+      grade: JPDBGrade;
+      show: boolean;
+      label?: string;
+    };
 
-      buttons.forEach((grade) =>
+    const buttons: ButtonConfig[] = this._useTwoPointGrading
+      ? [
+          { grade: 'fail', show: this._buttonVisibility.showFail },
+          { grade: 'pass', show: this._buttonVisibility.showPass },
+        ]
+      : [
+          { grade: 'nothing', show: this._buttonVisibility.showNothing, label: 'Noth.' },
+          { grade: 'something', show: this._buttonVisibility.showSomething, label: 'Somth.' },
+          { grade: 'hard', show: this._buttonVisibility.showHard },
+          { grade: 'okay', show: this._buttonVisibility.showOkay },
+          { grade: 'easy', show: this._buttonVisibility.showEasy },
+        ];
+
+    buttons.forEach(({ grade, show, label }) => {
+      if (show) {
         this._buttons.appendChild(
           createElement('a', {
             id: grade,
@@ -491,9 +506,9 @@ export class Popup {
               gradeCard.send(() => updateCardState.send());
             },
           }),
-        ),
-      );
-    }
+        );
+      }
+    });
   }
 
   //#endregion
