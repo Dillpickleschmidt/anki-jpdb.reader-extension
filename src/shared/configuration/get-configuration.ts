@@ -12,6 +12,8 @@ const NUMBER_KEYS: ConfigurationNumberKeys = ['schemaVersion', 'contextWidth', '
 const BOOLEAN_KEYS: ConfigurationBooleanKeys = [
   'jpdbAddToForq',
   'jpdbUseTwoGrades',
+  'jpdbSetSentence',
+  'jpdbAutoTranslate',
   'jpdbDisableReviews',
   'jpdbRotateFlags',
   'jpdbRotateCycle',

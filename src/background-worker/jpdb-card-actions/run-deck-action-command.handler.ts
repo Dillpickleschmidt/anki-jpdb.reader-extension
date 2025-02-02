@@ -3,6 +3,8 @@ import { ConfigurationSchema } from '@shared/configuration/types';
 import { MessageSender } from '@shared/extension/types';
 import { addVocabulary } from '@shared/jpdb/add-vocabulary';
 import { removeVocabulary } from '@shared/jpdb/remove-vocabulary';
+import { setCardSentence } from '@shared/jpdb/set-card-sentence';
+import { getEnglishTranslation } from '@shared/jpdb/ja2en';
 import { JPDBSpecialDeckNames } from '@shared/jpdb/types';
 import { RunDeckActionCommand } from '@shared/messages/background/run-deck-action.command';
 import { ToastCommand } from '@shared/messages/foreground/toast.command';
@@ -17,6 +19,8 @@ export class RunDeckActionCommandHandler extends BackgroundCommandHandler<RunDec
     sid: number,
     deck: 'mining' | 'blacklist' | 'neverForget',
     action: 'add' | 'remove',
+    sentence?: string,
+    shouldTranslate?: boolean,
   ): Promise<void> {
     const deckIdOrName = await this.getDeck(sender, deck);
 
@@ -25,8 +29,20 @@ export class RunDeckActionCommandHandler extends BackgroundCommandHandler<RunDec
     }
 
     const fn = action === 'add' ? addVocabulary : removeVocabulary;
-
     await fn(deckIdOrName, vid, sid);
+
+    // Only handle sentences when adding and sentence is provided
+    if (action === 'add' && sentence) {
+      try {
+        let translation;
+        if (shouldTranslate) {
+          translation = await getEnglishTranslation(sentence);
+        }
+        await setCardSentence(vid, sid, sentence, translation);
+      } catch (error) {
+        console.error('Error setting sentence:', error);
+      }
+    }
   }
 
   private async getDeck(

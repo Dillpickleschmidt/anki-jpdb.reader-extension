@@ -76,6 +76,8 @@ export class Popup {
   private _hidePopupAutomatically: boolean;
   private _hidePopupDelay: number;
   private _hideAfterAction: boolean;
+  private _setSentenceOnAdd: boolean;
+  private _autoTranslate: boolean;
   private _disableReviews: boolean;
   private _disableFadeAnimation: boolean;
   private _useTwoPointGrading: boolean;
@@ -157,6 +159,8 @@ export class Popup {
     this._hideAfterAction = await getConfiguration('hideAfterAction', true);
     this._disableFadeAnimation = await getConfiguration('disableFadeAnimation', true);
     this._useTwoPointGrading = await getConfiguration('jpdbUseTwoGrades', true);
+    this._setSentenceOnAdd = await getConfiguration('jpdbSetSentence', true);
+    this._autoTranslate = await getConfiguration('jpdbAutoTranslate', true);
     this._disableReviews = await getConfiguration('jpdbDisableReviews', true);
 
     this._selectedDeck = await getConfiguration('selectedMiningDeck', true);
@@ -398,7 +402,30 @@ export class Popup {
       key: 'mining' | 'neverForget' | 'blacklist',
     ): void => {
       const { vid, sid } = this._card!;
-      const deckAction = new RunDeckActionCommand(vid, sid, key, action);
+
+      // Get subtitle text if we're adding to mining deck
+      let sentence: string | undefined;
+      if (action === 'add' && key === 'mining' && this._setSentenceOnAdd && this._cardContext) {
+        const isASBPlayer = Registry.hostEvaluator.relevantMeta.some(
+          (meta) => meta.custom === 'ASBPlayerParser',
+        );
+
+        if (isASBPlayer) {
+          const container = this._cardContext.closest('.ajb-subtitle-wrapper');
+          if (container) {
+            sentence = container.textContent?.replace(/\s+/g, '').replace(/➡/g, '');
+          }
+        }
+      }
+
+      const deckAction = new RunDeckActionCommand(
+        vid,
+        sid,
+        key,
+        action,
+        sentence,
+        this._autoTranslate && !!sentence,
+      );
       const updateCardState = new UpdateCardStateCommand(vid, sid);
       deckAction.send(() => updateCardState.send());
     };
@@ -497,10 +524,10 @@ export class Popup {
     const isBL = this.cardHasState('blacklist', card);
 
     withElement(this._buttons, '#never-forget-deck', (el) => {
-      el.innerText = isNF ? 'Unmark as N.F.' : 'Never F.';
+      el.innerText = isNF ? 'Rmv N.F.' : 'Never F.';
     });
     withElement(this._buttons, '#blacklist-deck', (el) => {
-      el.innerText = isBL ? 'Remove from B.' : 'Blacklist';
+      el.innerText = isBL ? 'Rmv BL.' : 'Blacklist';
     });
   }
 

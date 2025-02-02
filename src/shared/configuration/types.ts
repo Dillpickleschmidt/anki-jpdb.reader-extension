@@ -10,6 +10,8 @@ export type ConfigurationSchema = {
   skipReleaseNotes: boolean;
   jpdbAddToForq: boolean;
   jpdbUseTwoGrades: boolean;
+  jpdbSetSentence: boolean;
+  jpdbAutoTranslate: boolean;
   jpdbDisableReviews: boolean;
   jpdbRotateFlags: boolean;
   jpdbRotateCycle: boolean;

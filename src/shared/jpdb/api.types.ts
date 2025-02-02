@@ -56,6 +56,15 @@ export type JPDBAddVocabularyRequest = {
   ignore_unknown?: boolean;
 };
 export type JPDBRemoveVocabularyRequest = Pick<JPDBAddVocabularyRequest, 'id' | 'vocabulary'>;
+export type JPDBSetCardSentenceRequest = {
+  vid: number;
+  sid: number;
+  sentence: string;
+  translation?: string;
+};
+export type JPDBja2enRequest = {
+  text: string;
+};
 
 export type JPDBDeckFields = keyof JPDBDeck;
 
@@ -74,4 +83,6 @@ export type JPDBEndpoints = {
   'list-user-decks': [JPDBListUserDecksRequest, JPDBListUserDecksResult];
   'deck/add-vocabulary': [JPDBAddVocabularyRequest, void];
   'deck/remove-vocabulary': [JPDBRemoveVocabularyRequest, void];
+  'set-card-sentence': [JPDBSetCardSentenceRequest, void];
+  ja2en: [JPDBja2enRequest, { text: string; isTruncated: boolean }];
 };
